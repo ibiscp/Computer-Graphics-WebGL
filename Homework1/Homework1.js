@@ -13,6 +13,8 @@ var c;
 
 var flag = true;
 
+var direction = true;
+
 var pointsArray = [];
 var colorsArray = [];
 
@@ -116,18 +118,23 @@ window.onload = function init() {
 
     thetaLoc = gl.getUniformLocation(program, "theta");
 
-
- document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
- document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
- document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
- document.getElementById("ButtonT").onclick = function(){flag = !flag;};
+    document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
+    document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
+    document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
+    document.getElementById("ButtonT").onclick = function(){flag = !flag;};
+    document.getElementById("ButtonC").onclick = function(){direction = !direction;};
 
     render();
 }
 
 var render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    if(flag) theta[axis] += 2.0;
+    if(flag){
+      if(direction)
+        theta[axis] += 2.0;
+      else
+        theta[axis] -= 2.0;
+    }
     gl.uniform3fv(thetaLoc, theta);
     gl.drawArrays( gl.TRIANGLES, 0, numVertices );
     requestAnimFrame(render);
