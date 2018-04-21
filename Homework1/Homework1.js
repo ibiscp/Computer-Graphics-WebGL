@@ -135,6 +135,42 @@ var render = function() {
       else
         theta[axis] -= 2.0;
     }
+
+    var theta_x_radians = theta[0] * Math.PI / 180;
+    var s_x = Math.sin( theta_x_radians );
+    var c_x = Math.cos( theta_x_radians );
+    var rx = [
+        1.0,  0.0,  0.0, 0.0,
+        0.0,  c_x,  s_x, 0.0,
+        0.0, -s_x,  c_x, 0.0,
+        0.0,  0.0,  0.0, 1.0];
+
+    var theta_y_radians = theta[1] * Math.PI / 180;
+    var s_y = Math.sin( theta_y_radians );
+    var c_y = Math.cos( theta_y_radians );
+    var ry = [
+        c_y, 0.0, -s_y, 0.0,
+        0.0, 1.0,  0.0, 0.0,
+        s_y, 0.0,  c_y, 0.0,
+        0.0, 0.0,  0.0, 1.0];
+
+    var theta_z_radians = theta[2] * Math.PI / 180;
+    var s_z = Math.sin( theta_z_radians );
+    var c_z = Math.cos( theta_z_radians );
+    var rz = [
+         c_z, s_z, 0.0, 0.0,
+        -s_z, c_z, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0,
+         0.0, 0.0, 0.0, 1.0];
+
+    var rx_loc = gl.getUniformLocation(program, "rx");
+    var ry_loc = gl.getUniformLocation(program, "ry");
+    var rz_loc = gl.getUniformLocation(program, "rz");
+
+    gl.uniformMatrix4fv(rx_loc, false, rx); // false means "not transpose"
+    gl.uniformMatrix4fv(ry_loc, false, ry); // false means "not transpose"
+    gl.uniformMatrix4fv(rz_loc, false, rz); // false means "not transpose"
+
     gl.uniform3fv(thetaLoc, theta);
     gl.drawArrays( gl.TRIANGLES, 0, numVertices );
     requestAnimFrame(render);
