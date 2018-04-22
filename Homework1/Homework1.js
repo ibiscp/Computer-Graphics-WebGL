@@ -14,10 +14,11 @@ var c;
 var flag = true;
 
 var direction = true;
-var sliderTX = 0;
-var sliderTY = 0;
-var sliderTZ = 0;
-
+var sliderTX;
+var sliderTY;
+var sliderTZ;
+var sliderPN;
+var sliderPF;
 
 var pointsArray = [];
 var colorsArray = [];
@@ -147,6 +148,10 @@ var render = function() {
     document.getElementById("ValueTY").innerHTML = sliderTY;
     sliderTZ = document.getElementById("SliderTZ").value/1000;
     document.getElementById("ValueTZ").innerHTML = sliderTZ;
+    sliderPN = document.getElementById("SliderPN").value/1000;
+    document.getElementById("ValuePN").innerHTML = sliderPN;
+    sliderPF = document.getElementById("SliderPF").value/1000;
+    document.getElementById("ValuePF").innerHTML = sliderPF;
 
     var theta_x_radians = theta[0] * Math.PI / 180;
     var s_x = Math.sin( theta_x_radians );
@@ -181,15 +186,23 @@ var render = function() {
           0.0, 0.0, sliderTZ, 0.0,
           sliderTX, sliderTY, 0.0, 1.0];
 
+    var proj = [
+         1.0, 0.0, 0.0, 0.0,
+         0.0, 1.0, 0.0, 0.0,
+         0.0, 0.0, 2/(sliderPF-sliderPN), (sliderPF+sliderPN)/(sliderPF-sliderPN),
+         0.0, 0.0, 0.0, 1.0];
+
     var rx_loc = gl.getUniformLocation(program, "rx");
     var ry_loc = gl.getUniformLocation(program, "ry");
     var rz_loc = gl.getUniformLocation(program, "rz");
     var tr_loc = gl.getUniformLocation(program, "tr");
+    var proj_loc = gl.getUniformLocation(program, "proj");
 
     gl.uniformMatrix4fv(rx_loc, false, rx); // false means "not transpose"
     gl.uniformMatrix4fv(ry_loc, false, ry); // false means "not transpose"
     gl.uniformMatrix4fv(rz_loc, false, rz); // false means "not transpose"
     gl.uniformMatrix4fv(tr_loc, false, tr); // false means "not transpose"
+    gl.uniformMatrix4fv(proj_loc, false, proj); // false means "not transpose"
 
     gl.uniform3fv(thetaLoc, theta);
     gl.drawArrays( gl.TRIANGLES, 0, numVertices );

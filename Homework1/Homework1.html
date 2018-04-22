@@ -17,9 +17,19 @@
   <span id="ValueTY"></span>
 </div>
 <div class="slidecontainer">
-  <span>Translade Z: </span>
+  <span>Scale: </span>
   <input type="range" min="10" max="1000" value="500.0" class="slider" id="SliderTZ">
   <span id="ValueTZ"></span>
+</div>
+<div class="slidecontainer">
+  <span>Plane Near: </span>
+  <input type="range" min="0" max="1000" value="1000" class="slider" id="SliderPN">
+  <span id="ValuePN"></span>
+</div>
+<div class="slidecontainer">
+  <span>Plane Far: </span>
+  <input type="range" min="-1000" max="0" value="-1000" class="slider" id="SliderPF">
+  <span id="ValuePF"></span>
 </div>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -35,11 +45,12 @@ uniform mat4 rx;
 uniform mat4 ry;
 uniform mat4 rz;
 uniform mat4 tr;
+uniform mat4 proj;
 
 void main()
 {
     fColor = vColor;
-    gl_Position = tr * rz * ry * rx * vPosition;
+    gl_Position = tr * rz * ry * rx * vPosition * proj;
     gl_Position.z = -gl_Position.z;
 }
 </script>
