@@ -17,8 +17,8 @@ var direction = true;
 var sliderTX;
 var sliderTY;
 var sliderTZ;
-var sliderPN;
-var sliderPF;
+var n;
+var f;
 
 var pointsArray = [];
 var colorsArray = [];
@@ -142,16 +142,16 @@ var render = function() {
     }
 
     // Translade slider
-    sliderTX = document.getElementById("SliderTX").value/1000;
+    sliderTX = document.getElementById("SliderTX").value;
     document.getElementById("ValueTX").innerHTML = sliderTX;
-    sliderTY = document.getElementById("SliderTY").value/1000;
+    sliderTY = document.getElementById("SliderTY").value;
     document.getElementById("ValueTY").innerHTML = sliderTY;
-    sliderTZ = document.getElementById("SliderTZ").value/1000;
+    sliderTZ = document.getElementById("SliderTZ").value;
     document.getElementById("ValueTZ").innerHTML = sliderTZ;
-    sliderPN = document.getElementById("SliderPN").value/1000;
-    document.getElementById("ValuePN").innerHTML = sliderPN;
-    sliderPF = document.getElementById("SliderPF").value/1000;
-    document.getElementById("ValuePF").innerHTML = sliderPF;
+    n = parseFloat(document.getElementById("SliderPN").value);
+    document.getElementById("ValuePN").innerHTML = n;
+    f = parseFloat(document.getElementById("SliderPF").value);
+    document.getElementById("ValuePF").innerHTML = f;
 
     var theta_x_radians = theta[0] * Math.PI / 180;
     var s_x = Math.sin( theta_x_radians );
@@ -186,10 +186,14 @@ var render = function() {
           0.0, 0.0, sliderTZ, 0.0,
           sliderTX, sliderTY, 0.0, 1.0];
 
+    var r = 1.0;
+    var l = -1.0;
+    var t = 1.0;
+    var b = -1.0;
     var proj = [
-         1.0, 0.0, 0.0, 0.0,
-         0.0, 1.0, 0.0, 0.0,
-         0.0, 0.0, 2/(sliderPF-sliderPN), (sliderPF+sliderPN)/(sliderPF-sliderPN),
+         2.0/(r-l), 0.0, 0.0, -(r+l)/(r-l),
+         0.0, 2.0/(t-b), 0.0, -(t+b)/(t-b),
+         0.0, 0.0, 2/(f-n), (f+n)/(f-n),
          0.0, 0.0, 0.0, 1.0];
 
     var rx_loc = gl.getUniformLocation(program, "rx");
