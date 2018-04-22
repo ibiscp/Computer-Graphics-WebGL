@@ -14,6 +14,7 @@ var c;
 var flag = true;
 
 var direction = true;
+var perspective = true;
 var sliderTX;
 var sliderTY;
 var sliderTZ;
@@ -127,6 +128,7 @@ window.onload = function init() {
     document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
     document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
     document.getElementById("ButtonT").onclick = function(){flag = !flag;};
+    document.getElementById("ButtonP").onclick = function(){perspective = !perspective;};
     document.getElementById("ButtonC").onclick = function(){direction = !direction;};
 
     render();
@@ -140,13 +142,17 @@ var render = function() {
       else
         theta[axis] -= 2.0;
     }
+    if(perspective)
+      var depth = 1.2;
+    else
+      var depth = 0.0;
 
     // Translade slider
-    sliderTX = document.getElementById("SliderTX").value;
+    sliderTX = parseFloat(document.getElementById("SliderTX").value);
     document.getElementById("ValueTX").innerHTML = sliderTX;
-    sliderTY = document.getElementById("SliderTY").value;
+    sliderTY = parseFloat(document.getElementById("SliderTY").value);
     document.getElementById("ValueTY").innerHTML = sliderTY;
-    sliderTZ = document.getElementById("SliderTZ").value;
+    sliderTZ = parseFloat(document.getElementById("SliderTZ").value);
     document.getElementById("ValueTZ").innerHTML = sliderTZ;
     n = parseFloat(document.getElementById("SliderPN").value);
     document.getElementById("ValuePN").innerHTML = n;
@@ -193,20 +199,32 @@ var render = function() {
     var proj = [
          2.0/(r-l), 0.0, 0.0, -(r+l)/(r-l),
          0.0, 2.0/(t-b), 0.0, -(t+b)/(t-b),
-         0.0, 0.0, 2/(f-n), (f+n)/(f-n),
+         0.0, 0.0, -2/(f-n), -(f+n)/(f-n),
          0.0, 0.0, 0.0, 1.0];
+
+    var depth_mat = [
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, -depth,
+        0.0, 0.0, 0.0, 1.0];
+
+    // var matrix = tr * rz * ry * rx;// * proj;
+    // var matrix_loc = gl.getUniformLocation(program, "matrix");
+    // gl.uniformMatrix4fv(matrix_loc, false, matrix); // false means "not transpose"
 
     var rx_loc = gl.getUniformLocation(program, "rx");
     var ry_loc = gl.getUniformLocation(program, "ry");
     var rz_loc = gl.getUniformLocation(program, "rz");
     var tr_loc = gl.getUniformLocation(program, "tr");
     var proj_loc = gl.getUniformLocation(program, "proj");
+    var depth_loc = gl.getUniformLocation(program, "depth");
 
     gl.uniformMatrix4fv(rx_loc, false, rx); // false means "not transpose"
     gl.uniformMatrix4fv(ry_loc, false, ry); // false means "not transpose"
     gl.uniformMatrix4fv(rz_loc, false, rz); // false means "not transpose"
     gl.uniformMatrix4fv(tr_loc, false, tr); // false means "not transpose"
     gl.uniformMatrix4fv(proj_loc, false, proj); // false means "not transpose"
+    gl.uniformMatrix4fv(depth_loc, false, depth_mat);
 
     gl.uniform3fv(thetaLoc, theta);
     gl.drawArrays( gl.TRIANGLES, 0, numVertices );
