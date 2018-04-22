@@ -6,6 +6,21 @@
 <button id = "ButtonZ">Rotate Z</button>
 <button id = "ButtonT">Toggle Rotation</button>
 <button id = "ButtonC">Change Direction</button>
+<div class="slidecontainer">
+  <span>Translade X: </span>
+  <input type="range" min="-1000" max="1000" value="0.0" class="slider" id="SliderTX">
+  <span id="ValueTX"></span>
+</div>
+<div class="slidecontainer">
+  <span>Translade Y: </span>
+  <input type="range" min="-1000" max="1000" value="0.0" class="slider" id="SliderTY">
+  <span id="ValueTY"></span>
+</div>
+<div class="slidecontainer">
+  <span>Translade Z: </span>
+  <input type="range" min="10" max="1000" value="500.0" class="slider" id="SliderTZ">
+  <span id="ValueTZ"></span>
+</div>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 
@@ -19,11 +34,12 @@ uniform vec3 theta;
 uniform mat4 rx;
 uniform mat4 ry;
 uniform mat4 rz;
+uniform mat4 tr;
 
 void main()
 {
     fColor = vColor;
-    gl_Position = rz * ry * rx * vPosition;
+    gl_Position = tr * rz * ry * rx * vPosition;
     gl_Position.z = -gl_Position.z;
 }
 </script>
@@ -47,7 +63,7 @@ void main()
 <script type="text/javascript" src="Homework1.js"></script>
 
 <body>
-<canvas id="gl-canvas" width="1024" height="1024">
+<canvas id="gl-canvas" width="500" height="500">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 </body>
