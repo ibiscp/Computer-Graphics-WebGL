@@ -18,55 +18,86 @@
   <span id="ValueTY"></span>
 </div>
 <div class="slidecontainer">
-  <span>Scale: </span>
-  <input type="range" min="0.01" max="1" value="0.5" step="0.01" class="slider" id="SliderTZ">
+  <span>Translade Z: </span>
+  <input type="range" min="-1" max="1" value="0.0" step="0.01" class="slider" id="SliderTZ">
   <span id="ValueTZ"></span>
 </div>
 <div class="slidecontainer">
+  <span>Scale: </span>
+  <input type="range" min="0.01" max="1" value="0.5" step="0.01" class="slider" id="SliderScale">
+  <span id="ValueScale"></span>
+</div>
+<div class="slidecontainer">
   <span>Plane Near: </span>
-  <input type="range" min="-1.0" max="0.0" value="-1.0" step="0.01" class="slider" id="SliderPN">
+  <input type="range" min="0.01" max="3.0" value="0.0" step="0.02" class="slider" id="SliderPN">
   <span id="ValuePN"></span>
 </div>
 <div class="slidecontainer">
   <span>Plane Far: </span>
-  <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" class="slider" id="SliderPF">
+  <input type="range" min="0.02" max="3.0" value="3.0" step="0.02" class="slider" id="SliderPF">
   <span id="ValuePF"></span>
+</div>
+<div class="slidecontainer">
+  <span>Light Position: </span>
+  <input type="range" min="-1" max="1" value="0.0" step="0.01" class="slider" id="LightX"><span id="ValueLX"></span>
+  <input type="range" min="-1" max="1" value="0.0" step="0.01" class="slider" id="LightY"><span id="ValueLY"></span>
+  <input type="range" min="-1" max="1" value="1.0" step="0.01" class="slider" id="LightZ"><span id="ValueLZ"></span>
 </div>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 
 attribute vec4 vPosition;
 attribute vec4 vColor;
+attribute vec3 vNormal;
 
+uniform mat4 modelViewMatrix;
 varying vec4 fColor;
+varying vec3 fNormal;
 
-uniform vec3 theta;
+uniform mat4 projectionMatrix;
 
-uniform mat4 rx;
-uniform mat4 ry;
-uniform mat4 rz;
-uniform mat4 tr;
-uniform mat4 proj;
-uniform mat4 depth;
-uniform mat4 matrix;
+
+uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+uniform vec4 lightPosition;
+uniform float shininess;
 
 void main()
 {
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    fNormal = mat3(modelViewMatrix) * vNormal;
     fColor = vColor;
-    gl_Position = depth * tr * rz * ry * rx * vPosition * proj;
-    //gl_Position = matrix * vPosition;
+
+    vec3 pos = -(gl_Position).xyz;
+    vec3 light = lightPosition.xyz;
+    vec3 L = normalize( light - pos );
+    vec3 E = normalize( -pos );
+    vec3 H = normalize( L + E );
+
+    // Compute terms in the illumination equation
+    vec4 ambient = ambientProduct;
+    float Kd = max( dot(L, fNormal), 0.0 );
+    vec4 diffuse = Kd*diffuseProduct;
+    float Ks = pow( max(dot(fNormal, H), 0.0), shininess );
+    vec4 specular = Ks * specularProduct;
+
+    if( dot(L, fNormal) < 0.0 ) {
+      specular = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+
+    fColor = ambient + diffuse + specular; // + vColor
+
+    fColor.a = 1.0;
 }
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
 
 precision mediump float;
-
 varying vec4 fColor;
 
 void main()
 {
-    gl_FragColor = fColor;
+  gl_FragColor = fColor;
 }
 
 </script>
