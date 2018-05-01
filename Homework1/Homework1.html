@@ -79,13 +79,12 @@ void main()
 {
     gl_Position = projectionMatrix * modelViewMatrix * vPosition;
     fNormal = mat3(modelViewMatrix) * vNormal;
-    //fColor = vColor;
-    //alert("Just like the sky!");
+
+    vec3 pos = -(gl_Position).xyz;
+    vec3 light = lightPosition.xyz;
+    vec3 L = normalize( light - pos );
 
     if(shading){
-      vec3 pos = -(gl_Position).xyz;
-      vec3 light = lightPosition.xyz;
-      vec3 L = normalize( light - pos );
       vec3 E = normalize( -pos );
       vec3 H = normalize( L + E );
 
@@ -96,27 +95,21 @@ void main()
       float Ks = pow( max(dot(fNormal, H), 0.0), shininess );
       vec4 specular = Ks * specularProduct;
 
-      if( dot(L, fNormal) < 0.0 ) {
+      if( dot(L, fNormal) < 0.0 )
         specular = vec4(0.0, 0.0, 0.0, 1.0);
-      }
 
       fColor = ambient + diffuse + specular; // + vColor
 
       fColor.a = 1.0;
     }
     else{
-      vec3 pos = -(gl_Position).xyz;
-      vec3 light = lightPosition.xyz;
-      vec3 L = normalize( light - pos );
-      vec3 N = fNormal;
-
       // Lambert's cosine law
-      float lambertian = max(dot(N, L), 0.0);
+      float lambertian = max(dot(fNormal, L), 0.0);
 
       float specular = 0.0;
 
       if(lambertian > 0.0) {
-        vec3 R = reflect(-L, N);      // Reflected light vector
+        vec3 R = reflect(-L, fNormal);      // Reflected light vector
         vec3 V = normalize(-pos); // Vector to viewer
 
         // Compute the specular term

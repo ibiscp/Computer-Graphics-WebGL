@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Development}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Item 1 - Change rotation direction}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Item 2 - Move the transformation matrices}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Item 3 - Include scaling and translation}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Item 4 - Orthographic projection}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Item 5 - Perspective projection}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.6}{Item 6 - Introducing the light source}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.7}{Item 7 - Gouraud and Phong shading models}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Conclusion}{}% 10
