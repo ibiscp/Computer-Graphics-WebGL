@@ -10,6 +10,7 @@ var program;
 var flag = true;
 var direction = true;
 var perspec = false;
+var shading = false;
 
 // Sliders
 var sliderTX;
@@ -68,7 +69,7 @@ var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
 var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
 var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
-var materialShininess = 100.0;
+var materialShininess = 500.0;
 
 var vertices = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -153,12 +154,12 @@ window.onload = function init() {
     colorCube();
 
     // Color
-    var cBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW );
-    var vColor = gl.getAttribLocation( program, "vColor" );
-    gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vColor );
+    // var cBuffer = gl.createBuffer();
+    // gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+    // gl.bufferData( gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW );
+    // var vColor = gl.getAttribLocation( program, "vColor" );
+    // gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
+    // gl.enableVertexAttribArray( vColor );
 
     // Shape
     var vBuffer = gl.createBuffer();
@@ -176,14 +177,13 @@ window.onload = function init() {
     gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vNormal );
 
-    // Light direction
-    var reverseLightDirectionLocation = gl.getUniformLocation( program, "u_reverseLightDirection" );
-    gl.uniform3fv( reverseLightDirectionLocation, [1, 1, 1] );
-
-    //
+    // Light
     var ambientProduct = mult(lightAmbient, materialAmbient);
     var diffuseProduct = mult(lightDiffuse, materialDiffuse);
     var specularProduct = mult(lightSpecular, materialSpecular);
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),flatten(diffuseProduct) );
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"),flatten(specularProduct) );
 
     // Buttons
     document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
@@ -192,11 +192,8 @@ window.onload = function init() {
     document.getElementById("ButtonT").onclick = function(){flag = !flag;};
     document.getElementById("ButtonP").onclick = function(){perspec = !perspec;};
     document.getElementById("ButtonC").onclick = function(){direction = !direction;};
-
-    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),flatten(ambientProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),flatten(diffuseProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"),flatten(specularProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),flatten(lightPosition) );
+    //document.getElementById("ButtonS").onclick = function(){shading = !shading;};
+    //gl.uniform1f(gl.getUniformLocation(program,"shading"), shading);
 
     gl.uniform1f(gl.getUniformLocation(program,"shininess"),materialShininess);
 
@@ -223,7 +220,7 @@ var render = function() {
     near = parseFloat(document.getElementById("SliderPN").value);
     document.getElementById("ValuePN").innerHTML = near;
     far = parseFloat(document.getElementById("SliderPF").value);
-    document.getElementById("ValuePF").innerHTML = far;
+    //document.getElementById("ValuePF").innerHTML = far;
 
     // Light
     lightX = parseFloat(document.getElementById("LightX").value);
