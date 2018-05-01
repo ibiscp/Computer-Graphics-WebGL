@@ -69,7 +69,7 @@ var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
 var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
 var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
 var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
-var materialShininess = 500.0;
+var materialShininess = 1.0;
 
 var vertices = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -192,8 +192,7 @@ window.onload = function init() {
     document.getElementById("ButtonT").onclick = function(){flag = !flag;};
     document.getElementById("ButtonP").onclick = function(){perspec = !perspec;};
     document.getElementById("ButtonC").onclick = function(){direction = !direction;};
-    //document.getElementById("ButtonS").onclick = function(){shading = !shading;};
-    //gl.uniform1f(gl.getUniformLocation(program,"shading"), shading);
+    document.getElementById("ButtonS").onclick = function(){shading = !shading;};
 
     gl.uniform1f(gl.getUniformLocation(program,"shininess"),materialShininess);
 
@@ -208,6 +207,8 @@ var render = function() {
       else
         theta[axis] -= 2.0;}
 
+    gl.uniform1f(gl.getUniformLocation(program,"shading"), shading);
+
     // Translade slider
     sliderTX = parseFloat(document.getElementById("SliderTX").value);
     document.getElementById("ValueTX").innerHTML = sliderTX;
@@ -220,7 +221,7 @@ var render = function() {
     near = parseFloat(document.getElementById("SliderPN").value);
     document.getElementById("ValuePN").innerHTML = near;
     far = parseFloat(document.getElementById("SliderPF").value);
-    //document.getElementById("ValuePF").innerHTML = far;
+    document.getElementById("ValuePF").innerHTML = far;
 
     // Light
     lightX = parseFloat(document.getElementById("LightX").value);
