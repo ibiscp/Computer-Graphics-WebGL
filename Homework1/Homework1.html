@@ -77,10 +77,9 @@ uniform bool shading;
 
 void main()
 {
-    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
     fNormal = mat3(modelViewMatrix) * vNormal;
 
-    vec3 pos = -(gl_Position).xyz;
+    vec3 pos = -(modelViewMatrix * vPosition).xyz;
     vec3 light = lightPosition.xyz;
     vec3 L = normalize( light - pos );
 
@@ -121,6 +120,7 @@ void main()
       float Ks = 1.0;
       fColor = Ka * ambientProduct + Kd * lambertian * diffuseProduct + Ks * specular * specularProduct;
     }
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
 }
 </script>
 
