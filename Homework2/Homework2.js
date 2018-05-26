@@ -38,14 +38,15 @@ var rightLowerLegId = 9;
 var tailId = 11;
 
 // Angles and position of the dog
-var theta = [180, 0, 25, 15, -25, 15, -25, 15, 25, 15, 0, 12];
+var theta = [180, 0, 0, 15, 0, 15, 0, 15, 0, 15, 0, 12];
 var position = 0;
 var leftUpperArmIncr = 1
-var rightUpperArmIncr = 1
-var leftUpperLegIncr = 1
+var rightUpperArmIncr = -1
+var leftUpperLegIncr = -1
 var rightUpperLegIncr = 1
 var tailIncr = 1;
 var positionIncr = 0.1;
+var headIncr = 0.7;
 
 // Sizes
 var torsoHeight = 2.5;
@@ -408,8 +409,12 @@ var render = function() {
           if (Math.abs(position) > 20){
             theta[torsoId] += 180;
             positionIncr *= -1;
+            theta[head2Id] = 0;
+            headIncr *= -1;
           }
           position += positionIncr;
+          if (Math.abs(theta[head2Id]) < 80)
+            theta[head2Id] += headIncr;
           // Tail
           if (Math.abs(theta[tailId]) > 12)
             tailIncr *= -1
