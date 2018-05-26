@@ -45,6 +45,7 @@ var rightUpperArmIncr = 1
 var leftUpperLegIncr = 1
 var rightUpperLegIncr = 1
 var tailIncr = 1;
+var positionIncr = 0.1;
 
 // Sizes
 var torsoHeight = 2.5;
@@ -61,6 +62,9 @@ var headHeight = 2.3;
 var headWidth = 1.8;
 var tailHeight = 2.0;
 var tailWidth = 0.3;
+
+// Flags
+var start = false;
 
 var numNodes = 12;
 var numAngles = 13;
@@ -341,6 +345,8 @@ window.onload = function init() {
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    document.getElementById("Run").onclick = function(){start = !start;};
+
     //     document.getElementById("slider0").onchange = function(event) {
     //     theta[torsoId ] = event.target.value;
     //     initNodes(torsoId);
@@ -397,33 +403,34 @@ window.onload = function init() {
 
 var render = function() {
         gl.clear( gl.COLOR_BUFFER_BIT );
-        //theta[torsoId] += 0.5;
-        // position += 0.1;
-        // if (position > 18)
-        //   position = -18;
 
-        // Tail
-        if (Math.abs(theta[tailId]) > 12){
-          tailIncr *= -1
-
+        if (start){
+          if (Math.abs(position) > 20){
+            theta[torsoId] += 180;
+            positionIncr *= -1;
+          }
+          position += positionIncr;
+          // Tail
+          if (Math.abs(theta[tailId]) > 12)
+            tailIncr *= -1
+          theta[tailId] += tailIncr
+          // Left upper arm
+          if (Math.abs(theta[leftUpperArmId]) > 25)
+            leftUpperArmIncr *= -1
+          theta[leftUpperArmId] += leftUpperArmIncr
+          // Right upper arm
+          if (Math.abs(theta[rightUpperArmId]) > 25)
+            rightUpperArmIncr *= -1
+          theta[rightUpperArmId] += rightUpperArmIncr
+          // Left upper arm
+          if (Math.abs(theta[leftUpperLegId]) > 25)
+            leftUpperLegIncr *= -1
+          theta[leftUpperLegId] += leftUpperLegIncr
+          // Right upper arm
+          if (Math.abs(theta[rightUpperLegId]) > 25)
+            rightUpperLegIncr *= -1
+          theta[rightUpperLegId] += rightUpperLegIncr
         }
-        theta[tailId] += tailIncr
-        // Left upper arm
-        if (Math.abs(theta[leftUpperArmId]) > 25)
-          leftUpperArmIncr *= -1
-        theta[leftUpperArmId] += leftUpperArmIncr
-        // Right upper arm
-        if (Math.abs(theta[rightUpperArmId]) > 25)
-          rightUpperArmIncr *= -1
-        theta[rightUpperArmId] += rightUpperArmIncr
-        // Left upper arm
-        if (Math.abs(theta[leftUpperLegId]) > 25)
-          leftUpperLegIncr *= -1
-        theta[leftUpperLegId] += leftUpperLegIncr
-        // Right upper arm
-        if (Math.abs(theta[rightUpperLegId]) > 25)
-          rightUpperLegIncr *= -1
-        theta[rightUpperLegId] += rightUpperLegIncr
 
         for(i=0; i<numNodes; i++) initNodes(i);
         traverse(torsoId);
