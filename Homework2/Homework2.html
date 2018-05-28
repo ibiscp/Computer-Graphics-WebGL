@@ -15,8 +15,8 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    //fColor = vColor;
-    //fTexCoord = vTexCoord;
+    fColor = vColor;
+    fTexCoord = vTexCoord;
     gl_Position = projectionMatrix * modelViewMatrix * vPosition;
 }
 </script>
@@ -33,10 +33,7 @@ uniform sampler2D Tex1;
 
 void main()
 {
-    //gl_FragColor = fColor*(texture2D(Tex0, fTexCoord)*texture2D(Tex1, fTexCoord));
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);//*texture2D(Tex1, fTexCoord);
-    //gl_FragColor = fColor;//*texture2D(Tex1, fTexCoord);
-    //gl_FragColor = fColor*texture2D(Tex1, fTexCoord);
+    gl_FragColor = fColor*(texture2D(Tex0, fTexCoord)*texture2D(Tex1, fTexCoord));
 }
 </script>
 
