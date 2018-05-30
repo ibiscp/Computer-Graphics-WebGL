@@ -37,7 +37,7 @@ var image2 = new Uint8Array(4*texSize*texSize);
 
 for ( var i = 0; i < texSize; i++ ) {
   for ( var j = 0; j <texSize; j++ ) {
-    c = 50+j/2;//127+127*Math.sin(0.1*i*j);
+    c = 200-j/2;//127+127*Math.sin(0.1*i*j);
     image2[4*i*texSize+4*j] = c;
     image2[4*i*texSize+4*j+1] = c;
     image2[4*i*texSize+4*j+2] = c;
@@ -69,11 +69,11 @@ var vertices = [
 
 var vertexColors = [
   vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
-  vec4( 1.0, 0.0, 0.0, 1.0 ),  // red
+  vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
   vec4( 1.0, 1.0, 0.0, 1.0 ),  // yellow
   vec4( 0.0, 1.0, 0.0, 1.0 ),  // green
   vec4( 0.0, 0.0, 1.0, 1.0 ),  // blue
-  vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
+  vec4( 1.0, 0.0, 0.0, 1.0 ),  // red
   vec4( 0.0, 1.0, 1.0, 1.0 ),  // white
   vec4( 0.0, 1.0, 1.0, 1.0 )   // cyan
 ];
@@ -121,42 +121,6 @@ function quad(a, b, c, d) {
   texCoordsArray.push(texCoord[3]);
 }
 
-// function quad(a, b, c, d) {
-//   var indices = [a, b, c, a, c, d];
-//
-//   for (var i=0; i<indices.lenght; i++){
-//     pointsArray.push(vertices[indices[i]]);
-//     colorsArray.push(vertexColors[a]);
-//     //texCoordsArray.push(texCoord[i%3]);
-//   }
-// }
-
-// function quad(a, b, c, d) {
-//      pointsArray.push(vertices[a]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[0]);
-//
-//      pointsArray.push(vertices[b]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[1]);
-//
-//      pointsArray.push(vertices[c]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[2]);
-//
-//      pointsArray.push(vertices[a]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[0]);
-//
-//      pointsArray.push(vertices[c]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[2]);
-//
-//      pointsArray.push(vertices[d]);
-//      colorsArray.push(vertexColors[a]);
-//      texCoordsArray.push(texCoord[3]);
-// }
-
 function cube(){
   quad( 1, 0, 3, 2 );
   quad( 2, 3, 7, 6 );
@@ -187,7 +151,7 @@ var rightLowerLegId = 9;
 var tailId = 11;
 
 // Angles and position of the dog
-var theta = [180, 0, 180, 7, 180, 7, 180, 7, 180, 7, 0, -12];
+var theta = [180, 0, 0, 7, 0, 7, 0, 7, 0, 7, 0, -12];
 var position = 0;
 var leftUpperArmIncr = 1
 var leftLowerArmIncr = 2
@@ -198,24 +162,24 @@ var leftLowerLegIncr = -2
 var rightUpperLegIncr = 1
 var rightLowerLegIncr = 2
 var tailIncr = 1;
-var positionIncr = 0.1;
+var positionIncr = 0.08;
 var headIncr = -0.7;
 
 // Sizes
 var torsoHeight = 2.5;
 var torsoWidth = 5.0;
-var upperArmHeight = 2.0;
-var lowerArmHeight = 1.0;
+var upperArmHeight = 1.5;
+var lowerArmHeight = 1.5;
 var upperArmWidth  = 0.7;
-var lowerArmWidth  = 0.5;
+var lowerArmWidth  = 0.6;
 var upperLegWidth  = 0.7;
-var lowerLegWidth  = 0.5;
-var lowerLegHeight = 1.0;
-var upperLegHeight = 2.0;
+var lowerLegWidth  = 0.6;
+var lowerLegHeight = 1.5;
+var upperLegHeight = 1.5;
 var headHeight = 2.3;
 var headWidth = 1.8;
-var tailHeight = 2.0;
-var tailWidth = 0.3;
+var tailHeight = 0.5;
+var tailWidth = 2.0;
 
 var numNodes = 12;
 var numAngles = 13;
@@ -264,66 +228,62 @@ function initNodes(Id) {
     m = translate(-0.5*torsoWidth-0.5*headWidth+0.3, 0.6*torsoHeight, 0.0);
     m = mult(m, rotate(theta[head1Id], 1, 0, 0));
     m = mult(m, rotate(theta[head2Id], 0, 1, 0));
-    m = mult(m, rotate(-45, 0, 0, 1));
+    //m = mult(m, rotate(-45, 0, 0, 1));
     m = mult(m, translate(0.0, -0.5*headHeight, 0.0));
     figure[headId] = createNode( m, head, tailId, null);
     break;
 
     case tailId:
-    m = translate(0.5*torsoWidth-0.1, torsoHeight - 0.5*tailWidth-0.1, 0.0);
-    m = mult(m, rotate(-45, 0, 0, 1));
+    m = translate(0.5*torsoWidth-0.1, torsoHeight - 0.5*tailHeight-0.1, 0.0);
+    m = mult(m, rotate(45, 0, 0, 1));
     m = mult(m, rotate(theta[tailId], 0, 0, 1));
     figure[tailId] = createNode( m, tail, leftUpperArmId, null );
     break;
 
     case leftUpperArmId:
     m = translate(-0.5*torsoWidth + 0.5*upperArmWidth, 0.1, 0.5*torsoHeight-0.5*upperLegWidth);
-    m = mult(m, rotate(180, 0, 0, 1));
     m = mult(m, rotate(theta[leftUpperArmId], 0, 0, 1));
     figure[leftUpperArmId] = createNode( m, leftUpperArm, rightUpperArmId, leftLowerArmId );
     break;
 
     case rightUpperArmId:
     m = translate(-0.5*torsoWidth + 0.5*upperArmWidth, 0.1, -0.5*torsoHeight+0.5*upperLegWidth);
-    m = mult(m, rotate(180, 0, 0, 1));
     m = mult(m, rotate(theta[rightUpperArmId], 0, 0, 1));
     figure[rightUpperArmId] = createNode( m, rightUpperArm, leftUpperLegId, rightLowerArmId );
     break;
 
     case leftUpperLegId:
     m = translate(0.5*torsoWidth - 0.5*upperArmWidth, 0.1, 0.5*torsoHeight-0.5*upperLegWidth);
-    m = mult(m, rotate(180, 0, 0, 1));
     m = mult(m , rotate(theta[leftUpperLegId], 0, 0, 1));
     figure[leftUpperLegId] = createNode( m, leftUpperLeg, rightUpperLegId, leftLowerLegId );
     break;
 
     case rightUpperLegId:
     m = translate(0.5*torsoWidth - 0.5*upperArmWidth, 0.1, -0.5*torsoHeight+0.5*upperLegWidth);
-    m = mult(m, rotate(180, 0, 0, 1));
     m = mult(m, rotate(theta[rightUpperLegId], 0, 0, 1));
     figure[rightUpperLegId] = createNode( m, rightUpperLeg, null, rightLowerLegId );
     break;
 
     case leftLowerArmId:
-    m = translate(0.0, -upperArmHeight+0.1, 0.0);
+    m = translate(0.0, -upperArmHeight+0.2, 0.0);
     m = mult(m, rotate(theta[leftLowerArmId], 0, 0, 1));
     figure[leftLowerArmId] = createNode( m, leftLowerArm, null, null );
     break;
 
     case rightLowerArmId:
-    m = translate(0.0, -upperArmHeight+0.1, 0.0);
+    m = translate(0.0, -upperArmHeight+0.2, 0.0);
     m = mult(m, rotate(theta[rightLowerArmId], 0, 0, 1));
     figure[rightLowerArmId] = createNode( m, rightLowerArm, null, null );
     break;
 
     case leftLowerLegId:
-    m = translate(0.0, -upperLegHeight+0.1, 0.0);
+    m = translate(0.0, -upperLegHeight+0.2, 0.0);
     m = mult(m, rotate(theta[leftLowerLegId], 0, 0, 1));
     figure[leftLowerLegId] = createNode( m, leftLowerLeg, null, null );
     break;
 
     case rightLowerLegId:
-    m = translate(0.0, -upperLegHeight+0.1, 0.0);
+    m = translate(0.0, -upperLegHeight+0.2, 0.0);
     m = mult(m, rotate(theta[rightLowerLegId], 0, 0, 1));
     figure[rightLowerLegId] = createNode( m, rightLowerLeg, null, null );
     break;
@@ -390,8 +350,8 @@ function  leftUpperLeg() {
 }
 
 function tail() {
-  instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * tailHeight, 0.0) );
-  instanceMatrix = mult(instanceMatrix, scale4(tailWidth, tailHeight, tailWidth) );
+  instanceMatrix = mult(modelViewMatrix, translate(0.5*tailWidth, 0.5*tailHeight, 0.0) );
+  instanceMatrix = mult(instanceMatrix, scale4(tailWidth, tailHeight, tailHeight) );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
 }
@@ -425,7 +385,8 @@ window.onload = function init() {
   if ( !gl ) { alert( "WebGL isn't available" ); }
 
   gl.viewport( 0, 0, canvas.width, canvas.height );
-  gl.clearColor( 0.862, 0.819, 0.819, 1.0 );
+  //gl.clearColor( 0.862, 0.819, 0.819, 1.0 );
+  gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
 
   //
   //  Load shaders and initialize attribute buffers
@@ -504,36 +465,36 @@ var render = function() {
       tailIncr *= -1
     theta[tailId] += tailIncr
     // Left upper arm
-    if (Math.abs(theta[leftUpperArmId]-180) > 25)
+    if (Math.abs(theta[leftUpperArmId]) > 25)
     leftUpperArmIncr *= -1
     theta[leftUpperArmId] += leftUpperArmIncr
     // Right upper arm
-    if (Math.abs(theta[rightUpperArmId]-180) > 25)
+    if (Math.abs(theta[rightUpperArmId]) > 25)
     rightUpperArmIncr *= -1
     theta[rightUpperArmId] += rightUpperArmIncr
     // Left upper arm
-    if (Math.abs(theta[leftUpperLegId]-180) > 25)
+    if (Math.abs(theta[leftUpperLegId]) > 25)
     leftUpperLegIncr *= -1
     theta[leftUpperLegId] += leftUpperLegIncr
     // Right upper arm
-    if (Math.abs(theta[rightUpperLegId]-180) > 25)
+    if (Math.abs(theta[rightUpperLegId]) > 25)
     rightUpperLegIncr *= -1
     theta[rightUpperLegId] += rightUpperLegIncr
 
     // Left lower arm
-    if (Math.abs(theta[leftUpperArmId]-7-180) > 7)
+    if (Math.abs(theta[leftUpperArmId]-12) > 12)
     leftLowerArmIncr *= -1
     theta[leftLowerArmId] += leftLowerArmIncr
     // Right Lower arm
-    if (Math.abs(theta[rightUpperArmId]-7-180) > 7)
+    if (Math.abs(theta[rightUpperArmId]-12) > 12)
     rightLowerArmIncr *= -1
     theta[rightLowerArmId] += rightLowerArmIncr
     // Left Lower arm
-    if (Math.abs(theta[leftUpperLegId]-7-180) > 7)
+    if (Math.abs(theta[leftUpperLegId]-12) > 12)
     leftLowerLegIncr *= -1
     theta[leftLowerLegId] += leftLowerLegIncr
     // Right Lower arm
-    if (Math.abs(theta[rightUpperLegId]-7-180) > 7)
+    if (Math.abs(theta[rightUpperLegId]-12) > 12)
     rightLowerLegIncr *= -1
     theta[rightLowerLegId] += rightLowerLegIncr
   }
