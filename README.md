@@ -2,6 +2,10 @@
 
 ## Homework 1 - 3D Cube
 
+<p align="center">
+<img src="Homework1/report/cube3d.png" width="200"/>
+</p>
+
 1 - Add a button that changes the direction of the current rotation.
 
 2 - Move the transformations matrices from the shader to the Javascript application, so that the ModelView and Projection matrix are computed in the application and then transferred to the shader.
@@ -17,6 +21,10 @@
 7 - Implement both the Gouraud and the Phong shading models, with a button switching between them.
 
 ## Homework 2 - Dog Animation
+
+<p align="center">
+<img src="Homework2/report/texture.png" width="200"/>
+</p>
 
 1 - Create a hierarchical model of a (simplified) dog, composed of the body, 4 legs (each one composed of 2 independent components, upper and lower leg), head and tail. All components are cubes, use the cube function present in the file
 
