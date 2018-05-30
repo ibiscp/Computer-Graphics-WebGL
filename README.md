@@ -1,10 +1,6 @@
-# Interactive Graphics - 3D Cube
+# Interactive Graphics
 
-The goal of this homework is to use WebGL with control code written in JavaScript in order to draw an interactive 3D Cube in an HTML canvas in a web browser. The source code for this project can be accessed from my [GitHub page](https://github.com/ibiscp/Computer-Graphics-WebGL).
-
-### Task
-
-A series of improvements were done in the base code in order to achieve the following effects:
+## Homework 1 - 3D Cube
 
 1 - Add a button that changes the direction of the current rotation.
 
@@ -19,4 +15,11 @@ A series of improvements were done in the base code in order to achieve the foll
 6 - Introduce a light source, replace the colors by the properties of the material (your choice) and assign to each vertex a normal.
 
 7 - Implement both the Gouraud and the Phong shading models, with a button switching between them.
-\end{enumerate}
+
+## Homework 2 - Dog Animation
+
+1 - Create a hierarchical model of a (simplified) dog, composed of the body, 4 legs (each one composed of 2 independent components, upper and lower leg), head and tail. All components are cubes, use the cube function present in the file
+
+2 - Add a procedural texture to the body of the dog. The texture should be a checkerboard pattern but with a linear decrease of intensity from the front to the back of the body.
+
+3 - Add a button that starts an animation of the dog so that, starting from an initial position where it is standing and positioned along the x axis, it walks to the right by moving (alternatively back and forth) the legs and turns the head in the direction of the viewer.
