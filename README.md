@@ -3,7 +3,7 @@
 ## Homework 1 - 3D Cube
 
 <p align="center">
-<img src="Homework1/report/cube3d.png" width="200"/>
+<img src="Homework1/report/cube3d.PNG" width="200"/>
 </p>
 
 1 - Add a button that changes the direction of the current rotation.
@@ -23,7 +23,7 @@
 ## Homework 2 - Dog Animation
 
 <p align="center">
-<img src="Homework2/report/texture.png" width="200"/>
+<img src="Homework2/report/texture.PNG" width="200"/>
 </p>
 
 1 - Create a hierarchical model of a (simplified) dog, composed of the body, 4 legs (each one composed of 2 independent components, upper and lower leg), head and tail. All components are cubes, use the cube function present in the file
